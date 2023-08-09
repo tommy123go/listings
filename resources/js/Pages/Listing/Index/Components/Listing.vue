@@ -21,14 +21,7 @@
          
         </Link>
       </div>
-      <div class="mt-3">
-        <Link class="btn-primary bg-orange-400 mr-4"
-          :href="route('listing.edit', {listing: listing.id})"
-        >
-          Edit
-        </Link>
-       
-      </div>
+      
     </Box>
   </template>
   

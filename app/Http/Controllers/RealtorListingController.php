@@ -14,23 +14,34 @@ class RealtorListingController extends Controller
     }
 
 
-    public function index (Request $request) {
+    public function index(Request $request)
+    {
 
         $filters = [
             'deleted' => $request->boolean('deleted'),
             ...$request->only(['by', 'order'])
         ];
 
-        return inertia('Realtor/Index',
-    [
-        'filters' => $filters,
-        'listings' => Auth::user()
+        return inertia(
+            'Realtor/Index',
+            [
+                'filters' => $filters,
+                'listings' => Auth::user()
                     ->listings()
-                    ->filter($filters)->paginate(10)->withQueryString()
-    ]);
+                    ->filter($filters)->withCount('images')->withCount('offers')->paginate(10)->withQueryString()
+            ]
+        );
     }
 
-       /**
+    public function show(Listing $listing)
+    {
+        return inertia(
+            'Realtor/Show',
+            ['listing' => $listing->load('offers','offers.bidder')]
+        );
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -74,7 +85,7 @@ class RealtorListingController extends Controller
      * @return \Illuminate\Http\Response
      */
 
- /**
+    /**
      * Show the form for editing the specified resource.
      *
 
